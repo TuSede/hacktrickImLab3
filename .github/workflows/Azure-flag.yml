@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Azure login
-        uses: azure/login@v1
+        uses: azure/login@v2
         with:
           client-id: 0f7196d5-d393-44f6-96eb-b06cd5312ddc
           tenant-id: fdd066e1-ee37-49bc-b08f-d0e152119b04
