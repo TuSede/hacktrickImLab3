@@ -20,7 +20,7 @@ jobs:
       - name: Download flag
         run: |
           az storage blob download \
-            --account-name <STORAGE_ACCOUNT_NAME> \
+            --account-name iamazurelab325a466ba \
             --container-name flag \
             --name flag.txt \
             --file flag.txt \
