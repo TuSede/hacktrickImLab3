@@ -13,7 +13,7 @@ jobs:
     steps:
 
       - name: Login to Azure via OIDC
-        uses: azure/login@v2
+        uses: azure/login@v1
         with:
           client-id: 22225454-dda2-4892-b644-e0d7d76f96ca
           tenant-id: fdd066e1-ee37-49bc-b08f-d0e152119b04
