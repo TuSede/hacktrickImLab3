@@ -1,44 +1,31 @@
-
 name: Get Flag
-on: [workflow
-_
-dispatch]
+on: [workflow_dispatch]
+
 permissions:
-id-token: write
-contents: read
+  id-token: write
+  contents: read
+
 jobs:
-get-flag:
-runs-on: ubuntu-latest
-steps:
-- name: Azure login
-uses: azure/login@v1
-with:
-client-id: <MANAGED
-IDENTITY
-CLIENT
-ID>
-_
-_
-_
-tenant-id: <TENANT
-ID>
-_
-subscription-id: <SUBSCRIPTION
-_
-enable-AzPSSession: true
-ID>
-- name: Download flag
-run: |
-az storage blob download \
---account-name <STORAGE
-ACCOUNT
-NAME> \
-_
-_
---container-name flag \
---name flag.txt \
---file flag.txt \
---auth-mode login
-- name: Read flag
-run: |
-cat flag.txt
+  get-flag:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Azure login
+        uses: azure/login@v1
+        with:
+          client-id: <MANAGED_IDENTITY_CLIENT_ID>
+          tenant-id: <TENANT_ID>
+          subscription-id: <SUBSCRIPTION_ID>
+          enable-AzPSSession: true
+
+      - name: Download flag
+        run: |
+          az storage blob download \
+            --account-name <STORAGE_ACCOUNT_NAME> \
+            --container-name flag \
+            --name flag.txt \
+            --file flag.txt \
+            --auth-mode login
+
+      - name: Read flag
+        run: |
+          cat flag.txt
